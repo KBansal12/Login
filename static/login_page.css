@@ -1,0 +1,288 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+  }
+  
+  :root {
+    --mc: #192838;
+    --pc: #000C1C;
+    --green: #0c5285;
+    --wc: rgba(255, 255, 255, 1);
+    --gc: rgba(184, 169, 169, 0.3);
+    --gdt: linear-gradient(45deg, rgba(72, 89, 107, 0.9), rgb(20, 221, 109.0.9));
+    --shdw: 5px 5px 25px rgba(0, 0, 0, 0.2);
+    --trns: 0.5s ease-in-out
+  }
+  
+  @import url(https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;800;900&display=swap);
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--pc);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  ul {
+    list-style: none;
+  }
+  
+  a {
+    text-decoration: none;
+    color: var(--green);
+  }
+  
+  .container {
+    width: 80vw;
+    min-width: 425px;
+    height: 90vh;
+    overflow: hidden;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    background: var(--c);
+  }
+  
+  .content,
+  .form-container {
+    width: 50%;
+    padding: 20px;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    background: linear-gradient(45deg, rgba(16, 16, 16, 0.9), rgb(18, 109, 208, 0.9)), url("myimg1.jpeg");
+    background-size: cover;
+    height: 100%;
+    color: var(--wc);
+  }
+  
+  h1 {
+    text-transform: uppercase;
+    font-size: 3rem;
+    margin-bottom: 0;
+  }
+  
+  h3 {
+    text-transform: uppercase;
+    font-size: 2rem;
+    font-weight: 300;
+    margin-top: -20px;
+  }
+  
+  p {
+    margin-top: 20px;
+    text-align: justify;
+  }
+  
+  .form-container {
+    background-color: var(--mc);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logo {
+    margin-bottom: 30px;
+  }
+  
+  ul {
+    display: flex;
+    gap: 30px;
+  }
+  
+  li {
+    color: var(--gc);
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: var(--trns) color;
+    -webkit-transition: var(--trns) color;
+    -moz-transition: var(--trns) color;
+    -ms-transition: var(--trns) color;
+    -o-transition: var(--trns) color;
+  }
+  
+  li.active {
+    color: var(--wc);
+  }
+  
+  form {
+    display: none;
+    flex-flow: row wrap;
+    gap: 10px;
+    width: 80%;
+    margin-top: 20px;
+  }
+  
+  form.active {
+    display: flex;
+  }
+  
+  .form-group {
+    width: 100%;
+  }
+  
+  .form-group:last-of-type {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-top: -10px;
+    margin-bottom: 20px;
+  }
+  
+  #firstName,
+  #lastName {
+    flex: 0.5;
+    width: 100%;
+  }
+  
+  .form-group span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  
+  label {
+    display: block;
+    color: var(--wc);
+    text-transform: uppercase;
+  }
+  
+  input {
+    margin: 8px auto;
+    border: 2px solid transparent;
+    transition: var(--trns) border;
+    -webkit-transition: var(--trns) border;
+    -moz-transition: var(--trns) border;
+    -ms-transition: var(--trns) border;
+    -o-transition: var(--trns) border;
+    
+  }
+  
+  input::placeholder {
+    color: var(--mc);
+    text-transform: capitalize;
+    font-size: 0.9rem;
+  }
+  
+  input:focus {
+    border: 2px solid var(--green);
+    outline: none;
+    color: var(--mc);
+  }
+  
+  input:checked {
+    background-color: #14a1dd;
+  }
+  
+  input:not(input[type="checkbox"]),
+  button {
+    font-size: 0.9rem;
+    padding: 10px 16px;
+    width: 100%;
+    display: block;
+  }
+  
+  button {
+    background-color: var(--green);
+    border: none;
+    border-radius: 5px;
+    color: var(--wc);
+    font-size: 1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity var(--trns);
+    -webkit-transition: opacity var(--trns);
+    -moz-transition: opacity var(--trns);
+    -ms-transition: opacity var(--trns);
+    -o-transition: opacity var(--trns);
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  
+  .signup div:last-of-type {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+  }
+  
+  #agree {
+    margin: 0;
+  }
+  
+  @media (max-width:991px) {
+    .container{
+      width: 90%;
+    }
+    form{
+      width: 100%;
+    }
+    #firstName,
+    #lastName {
+      width: 100%;
+      flex: 1;
+    }
+  }
+  @media (max-width:768px) {
+    .container{
+      width: 90vw;
+      height: 90vh;
+    }
+    .content{
+      display: none;
+    }
+    .form-container{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    form{
+      width: 100%;
+    }
+    button{
+      width: 200px;
+      margin: 0 auto;
+    }
+  }
+  
+  @media(max-width:425px){
+    .container{
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+    }
+    .form-container{
+      width: 100%;
+      height: 100%;
+    }
+    form{
+      flex-direction: column;
+    }
+    .form-group{
+      width: 100%;
+      flex: 1;
+    }
+  }

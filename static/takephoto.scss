@@ -1,0 +1,102 @@
+$step: 100% / 15;
+$font-size: 6vw;
+
+@keyframes can {
+  0% { transform: translateY(0) }
+  #{$step * 4} { transform: translateY(0); opacity: 1; }
+  #{$step * 5} { transform: translateY(-100%); opacity: 0; }
+  #{$step * 5 + 0.001} { transform: translateY(100%); opacity: 0; }
+  #{$step * 5 + 0.003} { transform: translateY(100%); opacity: 1; }
+  #{$step * 14} { transform: translateY(100%) }
+  #{$step * 15} { transform: translateY(0) }
+}
+
+@keyframes will {
+  0% { transform: translateY(0) };
+  #{$step * 4} { transform: translateY(0); }
+  #{$step * 5} { transform: translateY(-100%); }
+  #{$step * 9} { transform: translateY(-100%); opacity: 1 }
+  #{$step * 10} { transform: translateY(-200%); opacity: 0; }
+  #{$step * 10 + 0.001} { transform: translateY(0); }
+  #{$step * 10 + 0.003} { transform: translateY(0); opacity: 1;}
+  #{$step * 15} { transform: translateY(0) }
+}
+
+@keyframes thrive {
+  0% { transform: translateY(-300%) };
+  0.0001% { transform: translateY(0) }
+  #{$step * 4} { transform: translateY(0); }
+  #{$step * 5} { transform: translateY(-100%); }
+  #{$step * 9} { transform: translateY(-100%); }
+  #{$step * 10} { transform: translateY(-200%); }
+  #{$step * 14 } { transform: translateY(-200%); opacity: 1; }
+  #{$step * 15} { transform: translateY(-300%); opacity: 0;}
+}
+
+
+.container {
+ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.word {
+  display: flex;
+  grid-column: 2;
+  grid-row: auto;
+  
+  span { display: inline-block }
+}
+
+@for $i from 1 through 6 {
+  .can {
+    span:nth-child(#{$i}) {
+      animation: can 6s ease-in-out both #{0.05 * $i}s infinite;
+    }
+  }
+  
+  .will {
+    span:nth-child(#{$i}) {
+      animation: will 6s ease-in-out both #{0.05 * $i}s infinite;
+    }
+  }
+  
+  .thrive {
+    span:nth-child(#{$i}) {
+      animation: thrive 6s ease-in-out both #{0.05 * $i}s infinite;
+    }
+  }
+}
+
+.title {
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  grid-template-rows: auto;
+  overflow: hidden;
+  max-height: $font-size;
+}
+
+
+
+
+
+/* For styling the demo. Not required. */
+
+
+$text-color: #ececec;
+
+
+
+
+
+.title {
+  color: $text-color;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: $font-size;
+  line-height: $font-size;
+  letter-spacing: 3px;
+}

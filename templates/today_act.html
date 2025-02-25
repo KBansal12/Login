@@ -1,0 +1,38 @@
+<script>
+    // Store visited pages in sessionStorage
+if (!sessionStorage.visitedPages) {
+  sessionStorage.visitedPages = JSON.stringify([]);
+}
+
+// Function to add a visited page to session storage
+function addVisitedPage(page) {
+  let visitedPages = JSON.parse(sessionStorage.visitedPages);
+  if (!visitedPages.includes(page)) {
+    visitedPages.push(page);
+    sessionStorage.visitedPages = JSON.stringify(visitedPages);
+  }
+}
+
+// Add the current page to the visited list
+addVisitedPage(window.location.href);
+
+// Display visited pages on the webpage
+function displayVisitedPages() {
+  const visitedPages = JSON.parse(sessionStorage.visitedPages);
+  const list = document.createElement('ul');
+  
+  visitedPages.forEach(page => {
+    const listItem = document.createElement('li');
+    listItem.textContent = page;
+    list.appendChild(listItem);
+  });
+
+  document.body.appendChild(list);
+}
+
+// Call the display function when you want to display the visited pages
+window.onload = function () {
+  displayVisitedPages();
+};
+
+</script>

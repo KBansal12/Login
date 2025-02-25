@@ -1,0 +1,211 @@
+<style>
+.content{
+    display: grid;
+    padding: 6%;
+}
+body{
+    background-color: rgb(5, 23, 26);
+
+   color : white;
+}
+.input{
+   
+    height: 32px;
+}
+.enterpass{
+    justify-content: space-around;
+}
+
+/* From Uiverse.io by cssbuttons-io */ 
+button {
+    justify-content: space-around;
+    padding: 3%;
+ --glow-color: rgb(0, 0, 0);
+ --glow-spread-color: rgba(5, 98, 152, 0.781);
+ --enhanced-glow-color: rgb(0, 0, 0);
+ --btn-color: rgb(0, 189, 223);
+ border: .25em solid var(--glow-color);
+ padding: 1em 3em;
+ color: var(--glow-color);
+ font-size: 15px;
+ font-weight: bold;
+ background-color: var(--btn-color);
+ border-radius: 1em;
+ outline: none;
+ box-shadow: 0 0 1em .25em var(--glow-color),
+        0 0 4em 1em var(--glow-spread-color),
+        inset 0 0 .75em .25em var(--glow-color);
+ text-shadow: 0 0 .5em var(--glow-color);
+ position: relative;
+ transition: all 0.3s;
+}
+
+button::after {
+ pointer-events: none;
+ content: "";
+ position: absolute;
+ top: 120%;
+ left: 0;
+ height: 100%;
+ width: 100%;
+ background-color: var(--glow-spread-color);
+ filter: blur(2em);
+ opacity: .7;
+ transform: perspective(1.5em) rotateX(35deg) scale(1, .6);
+}
+
+button:hover {
+ color: var(--btn-color);
+ background-color: var(--glow-color);
+ box-shadow: 0 0 1em .25em var(--glow-color),
+        0 0 4em 2em var(--glow-spread-color),
+        inset 0 0 .75em .25em var(--glow-color);
+}
+
+button:active {
+ box-shadow: 0 0 0.6em .25em var(--glow-color),
+        0 0 2.5em 2em var(--glow-spread-color),
+        inset 0 0 .5em .25em var(--glow-color);
+}
+.container{
+padding: 7%;
+}
+.passphrase{
+    padding: 4%;
+    width: 32px;
+}
+</style>
+<body>
+    <h1>Hide Your document:-</h1>
+   <div class="content">
+    <div class="input"><input type="file" id="fileInput" /></div>
+    <div class="enterpass"><input type="password" id="passphrase" placeholder="Enter Password" /></div>
+    <div class="container"> 
+        <button id="encryptButton">Encrypt</button>
+     <button id="decryptButton">Decrypt</button></div>
+     <a id="downloadLink" style="color:white;">Download</a>
+   
+   </div>
+</body>
+<script>
+   
+// JavaScript code:
+const fileInput = document.getElementById('fileInput');
+const passphraseInput = document.getElementById('passphrase');
+const encryptButton = document.getElementById('encryptButton');
+const decryptButton = document.getElementById('decryptButton');
+const downloadLink = document.getElementById('downloadLink');
+
+async function generateKey(passphrase) {
+    const encoder = new TextEncoder();
+    const keyMaterial = await window.crypto.subtle.importKey(
+        'raw',
+        encoder.encode(passphrase),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveKey']
+    );
+
+    return window.crypto.subtle.deriveKey(
+        {
+            name: 'PBKDF2',
+            salt: encoder.encode('file-encryption-salt'), // Use a consistent salt
+            iterations: 100000,
+            hash: 'SHA-256',
+        },
+        keyMaterial,
+        {
+            name: 'AES-GCM',
+            length: 256,
+        },
+        false,
+        ['encrypt', 'decrypt']
+    );
+}
+
+async function encryptFile(file, passphrase) {
+    const key = await generateKey(passphrase);
+    const iv = window.crypto.getRandomValues(new Uint8Array(12)); // Initialization vector
+    const fileBuffer = await file.arrayBuffer();
+
+    const encrypted = await window.crypto.subtle.encrypt(
+        {
+            name: 'AES-GCM',
+            iv,
+        },
+        key,
+        fileBuffer
+    );
+
+    // Combine IV and encrypted data
+    const combined = new Uint8Array(iv.byteLength + encrypted.byteLength);
+    combined.set(iv, 0);
+    combined.set(new Uint8Array(encrypted), iv.byteLength);
+
+    return combined;
+}
+
+async function decryptFile(file, passphrase) {
+    const key = await generateKey(passphrase);
+    const fileBuffer = await file.arrayBuffer();
+
+    const iv = new Uint8Array(fileBuffer.slice(0, 12)); // Extract IV
+    const encrypted = fileBuffer.slice(12); // Extract encrypted data
+
+    const decrypted = await window.crypto.subtle.decrypt(
+        {
+            name: 'AES-GCM',
+            iv,
+        },
+        key,
+        encrypted
+    );
+
+    return new Uint8Array(decrypted);
+}
+
+function downloadFile(data, fileName) {
+    const blob = new Blob([data]);
+    const url = URL.createObjectURL(blob);
+    downloadLink.href = url;
+    downloadLink.download = fileName;
+    downloadLink.style.display = 'block';
+    downloadLink.textContent = `Download ${fileName}`;
+}
+
+encryptButton.addEventListener('click', async () => {
+    const file = fileInput.files[0];
+    const passphrase = passphraseInput.value;
+
+    if (!file || !passphrase) {
+        alert('Please upload a file and enter a passphrase.');
+        return;
+    }
+
+    try {
+        const encryptedData = await encryptFile(file, passphrase);
+        downloadFile(encryptedData, `${file.name}.encrypted`);
+    } catch (err) {
+        alert('Error encrypting file: ' + err.message);
+    }
+});
+
+decryptButton.addEventListener('click', async () => {
+    const file = fileInput.files[0];
+    const passphrase = passphraseInput.value;
+
+    if (!file || !passphrase) {
+        alert('Please upload a file and enter a passphrase.');
+        return;
+    }
+
+    try {
+        const decryptedData = await decryptFile(file, passphrase);
+        downloadFile(decryptedData, file.name.replace('.encrypted', ''));
+    } catch (err) {
+        alert('Error decrypting file: ' + err.message);
+    }
+});
+
+</script>
+

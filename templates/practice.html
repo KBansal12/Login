@@ -1,0 +1,42 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const inputCode = document.getElementById("codeInput");
+    const checkButton = document.getElementById("checkButton");
+    const outputDiv = document.getElementById("output");
+
+    checkButton.addEventListener("click", function () {
+        const code = inputCode.value;
+        let errorMessages = [];
+        
+        // Check for JavaScript syntax errors
+        try {
+            new Function(code); // Compiles the JS code
+        } catch (error) {
+            errorMessages.push(" Error: " + error.message);
+        }
+
+        // Check for HTML syntax errors
+        try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(code, "text/html");
+            const errors = doc.getElementsByTagName("parsererror");
+            if (errors.length > 0) {
+                errorMessages.push("HTML Error: " + errors[0].innerText);
+            }
+        } catch (error) {
+            errorMessages.push("HTML Parsing Error: " + error.message);
+        }
+
+        // Display output
+        outputDiv.innerHTML = errorMessages.length > 0 
+            ? errorMessages.join("<br>") 
+            : "No syntax errors detected.";
+    });
+});
+
+</script>
+
+// HTML Structure:
+// <textarea id="codeInput" placeholder="Enter your JavaScript code here"></textarea>
+// <button id="checkButton">Check Syntax</button>
+// <p id="output"></p>

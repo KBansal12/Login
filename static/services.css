@@ -1,0 +1,116 @@
+:root {
+  --bg: #4eadba;
+  --card-bg: #000000;
+  --border: 1px solid #3c3c3a;
+  --shadow: 0px 10px 15px 0.3px rgba(244, 244, 244, 0.411);
+  --text: #ffffff;
+  --sub-text: #909090;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+html,
+body {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  text-align: center;
+  background: var(--bg);
+  background-color: black;
+
+}
+
+h1 {
+  padding: 20px;
+  color: var(--text);
+  font-size: 50px;
+}
+
+.slider {
+  max-width: 1100px;
+  height: 427px;
+  display: flex;
+  background: transparent;
+}
+.slider .card {
+  flex: 1;
+  margin: 0 10px;
+  background: var(--card-bg);
+  border: var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.slider .card .img {
+  height: 200px;
+  margin: 16px;
+  width: calc(100% - 32px);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+.slider .card .img:hover {
+  filter: brightness(75%);
+}
+.slider .card .img img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: all 0.2s ease-in-out;
+}
+
+.slider .card .img img:hover {
+  transform: scale(1.1); /* Scale up by 10% on hover */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.slider .card .content {
+  padding: 10px 20px;
+}
+.card .content .title {
+  text-align: justify;
+  font-size: 25px;
+  font-weight: 500;
+  color: var(--text);
+}
+.card .content .sub-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--sub-text);
+  line-height: 20px;
+  text-align: left;
+}
+
+.card .content p {
+  text-align: justify;
+  margin: 10px 0;
+  color: var(--sub-text);
+  line-height: 1.5; /* Adjust the line height as needed */
+  max-height: 6em; /* 4 lines multiplied by the line height (adjust as needed) */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.card .content button {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  bottom: 10px;
+  right: 24px;
+  font-size: 20px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  transition: bottom 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.card:hover button {
+  bottom: 15px;
+  opacity: 1;
+}
