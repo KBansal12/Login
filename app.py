@@ -31,7 +31,7 @@ def signup_page():
     return render_template('login_page.html')
 
 # Handle Signup
-@app.route('/signup', methods=['POST'])
+@app.route('/SignUp', methods=['POST'])
 def signup():
     first_name = request.form['first_name']
     last_name = request.form['last_name']
@@ -43,15 +43,19 @@ def signup():
     df = pd.DataFrame(data)
 
     # Check if email exists
-    if not df.empty and email in df["Email"].values:
+    if not df.empty and email in df["email"].values:
         return "Email already registered. Try another."
 
     # Save new user to Google Sheets
     new_user = [first_name, last_name, email, password]
+    
+    print(df.head())  # Check what’s inside the DataFrame
+    print("Appending new user:", new_user)
     sheet.append_row(new_user)
-
     return "Signup Successful! You can now log in."
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 10000))  # Default to port 10000 if not set
     app.run(host='0.0.0.0', port=port, debug=True)
+    
+   
