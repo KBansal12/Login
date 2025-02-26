@@ -54,6 +54,11 @@ def signup():
     sheet.append_row(new_user)
     return "Signup Successful! You can now log in."
 
+@app.route('/oauth2callback')
+def oauth2callback():
+    return render_template("index.html")  # Redirects to a new page after login
+
+
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 10000))  # Default to port 10000 if not set
     app.run(host='0.0.0.0', port=port, debug=True)
