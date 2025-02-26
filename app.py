@@ -1,15 +1,26 @@
 from flask import Flask, render_template, request
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 import pandas as pd
+import json
+import os
 
 app = Flask(__name__)
 
 # Google Sheets API Setup
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets",
-         "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+scope = ["https://spreadsheets.google.com/feeds", 
+         "https://www.googleapis.com/auth/spreadsheets",
+         "https://www.googleapis.com/auth/drive.file", 
+         "https://www.googleapis.com/auth/drive"]
 
-creds = ServiceAccountCredentials.from_json_keyfile_name("Signup.json", scope)
+# Load credentials from environment variable
+creds_json = os.getenv("GOOGLE_CREDENTIALS")  # Read JSON from env variable
+
+if not creds_json:
+    raise ValueError("Missing GOOGLE_CREDENTIALS environment variable!")
+
+creds_dict = json.loads(creds_json)  # Convert string to dictionary
+creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
 client = gspread.authorize(creds)
 sheet = client.open("SignUp").sheet1  # Open your Google Sheet
 
